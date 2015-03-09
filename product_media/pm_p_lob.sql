@@ -41,6 +41,7 @@ Rem      Please note that directory names need the trailing de-
 Rem      limiter
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem    gvenzl      03/09/15 - Include connection string
 Rem    hyeh        08/29/02 - hyeh_mv_comschema_to_rdbms
 Rem    ahunold     04/27/01 - concat filename in SQL, not SQL*Loader
 Rem    ahunold     04/10/01 - Added parameter 2,3,4
@@ -56,11 +57,12 @@ DEFINE pm_pass     = &1
 DEFINE pm_dat_path = &2
 DEFINE pm_log_path = &3
 DEFINE pm_wrk_path = &4
+DEFINE conn_string = &5
 
 DEFINE ctl_file = &pm_dat_path.pm_p_lob.ctl
 DEFINE dat_file = &pm_wrk_path.pm_p_lob.dat
 DEFINE log_file = &pm_log_path.pm_p_lob.log
 
-HOST sqlldr pm/&pm_pass -
+HOST sqlldr pm/&pm_pass&&conn_string -
   control=&ctl_file data=&dat_file log=&log_file
 
