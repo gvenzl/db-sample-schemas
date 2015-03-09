@@ -40,6 +40,7 @@ Rem               named HR,OE,IX,PM,SH
 Rem
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem    gvenzl      03/09/15 - Include exit at the end of the script
 Rem    gvenzl      03/09/15 - Parameterize inputs
 Rem    gvenzl      03/06/15 - Including connection string
 Rem    cbauwens    03/05/09 - Drop Sample Schemas
@@ -125,3 +126,5 @@ UNDEFINE spl_file
 
 PROMPT
 PROMPT ALL Sample Schemas have been dropped.
+
+EXIT
