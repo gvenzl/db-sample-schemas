@@ -146,7 +146,7 @@ source /usr/local/bin/oraenv
 
 ```shell
 sqlplus /nolog
-@drop_sch.sql systempw conn_string
+@drop_sch.sql systempw conn_string logfile
 ```
 
 When prompted, enter the SYSTEM password the connection string and a log file name.
