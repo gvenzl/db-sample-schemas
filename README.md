@@ -114,12 +114,13 @@ discussed in [README.txt](#README.txt):
 sqlplus /nolog
 @mksample systempw syspw hrpw oepw pmpw ixpw shpw bipw users temp /your/path/to/log/ conn_string
 ```
-An example of the script below would be:
+An example run of the script above would look like this:
 ```shell
 sqlplus /nolog
 @mksample oracle oracle hr oe pm ix sh bi users temp /home/oracle/Desktop/run/log/ @//localhost:1521/TEST
 ```
 ***Note***: Use an absolute path and also append a trailing slash to the log directory name.
+***Note***: The connection string is optional. If no connection string is specified the script will automatically connect to $ORACLE_SID
 
 Use your current SYSTEM and SYS passwords, and also your actual
 default and temporary tablespace names.  The passwords for the new
