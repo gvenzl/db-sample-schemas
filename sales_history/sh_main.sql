@@ -41,6 +41,7 @@ Rem     without adding any delimiters.
 Rem     Run this as SYS or SYSTEM
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem     gvenzl     03/06/15 - Including connection string
 Rem     awesley    04/03/12 - Remove cwm_user
 Rem     jmadduku   02/18/11 - Grant Unlimited Tablespace priv with RESOURCE
 Rem     cbauwens   03/06/08 - NLS settings for load
@@ -89,6 +90,9 @@ PROMPT
 PROMPT specify version as parameter 7:
 DEFINE vrs = &7
 PROMPT
+PROMPT specify connection string as parameter 8:
+DEFINE conn_string = &8
+PROMPT
 
 DEFINE spool_file = &log_dir.sh_&vrs..log
 SPOOL &spool_file 
@@ -136,7 +140,7 @@ REM =======================================================
 REM grants for sys schema
 REM =======================================================
 
-CONNECT sys/&pass_sys AS SYSDBA;
+CONNECT sys/&pass_sys&&conn_string AS SYSDBA;
 GRANT execute ON sys.dbms_stats TO sh;
 
 REM =======================================================
@@ -156,7 +160,7 @@ REM =======================================================
 REM create sh schema objects (sales history - star schema)
 REM =======================================================
 
-CONNECT sh/&pass
+CONNECT sh/&pass&&conn_string
 
 ALTER SESSION SET NLS_LANGUAGE=American;
 ALTER SESSION SET NLS_TERRITORY=America;
@@ -175,7 +179,7 @@ REM Populate tables
 REM =======================================================
 
 DEFINE vscript = __SUB__CWD__/sales_history/lsh_&vrs 
-@&vscript &pass &data_dir &log_dir &vrs
+@&vscript &pass &data_dir &log_dir &vrs &conn_string
 
 REM =======================================================
 REM Post load operations

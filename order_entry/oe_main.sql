@@ -38,6 +38,7 @@ rem     Tablespaces present
 rem     Database enabled for Spatial and XML
 rem
 rem MODIFIED   (MM/DD/YY)
+Rem   gvenzl    03/06/15 - Including connection string
 rem   celsbern  08/13/12 - added create or replace for coe synonyms
 rem   jmadduku  02/18/11 - Grant Unlimited Tablespace priv with RESOURCE
 rem   pthornto  07/29/04 - 
@@ -84,6 +85,9 @@ PROMPT
 PROMPT specify version as parameter 8:
 DEFINE vrs = &8
 PROMPT
+PROMPT specify connection string as parameter 9:
+DEFINE conn_string = &9
+PROMPT
 
 -- The first dot in the spool command below is 
 -- the SQL*Plus concatenation character
@@ -120,14 +124,14 @@ REM =======================================================
 REM grants from sys schema
 REM =======================================================
 
-CONNECT sys/&pass_sys AS SYSDBA;  
+CONNECT sys/&pass_sys&&conn_string AS SYSDBA;  
 GRANT execute ON sys.dbms_stats TO oe;
 
 REM =======================================================
 REM grants from hr schema
 REM =======================================================
 
-CONNECT hr/&passhr;
+CONNECT hr/&passhr&&conn_string
 GRANT REFERENCES, SELECT ON employees TO oe;
 GRANT REFERENCES, SELECT ON countries TO oe;
 GRANT REFERENCES, SELECT ON locations TO oe;
@@ -140,7 +144,7 @@ REM =======================================================
 REM create oe schema (order entry)
 REM =======================================================
 
-CONNECT oe/&pass
+CONNECT oe/&pass&&conn_string
 ALTER SESSION SET NLS_LANGUAGE=American;
 ALTER SESSION SET NLS_TERRITORY=America;
 
@@ -149,21 +153,21 @@ ALTER SESSION SET NLS_TERRITORY=America;
 --
 
 DEFINE vscript = __SUB__CWD__/order_entry/coe_&vrs
-@&vscript &vrs &pass &pass_sys
+@&vscript &vrs &pass &pass_sys &&conn_string
 
 --
 -- call script to load OE objects
 --
 
 DEFINE vscript = __SUB__CWD__/order_entry/loe_&vrs
-@&vscript &vrs &data_path &log_path &pass
+@&vscript &vrs &data_path &log_path &pass &&conn_string
 
 --
 -- call script for post-load operations on OE
 --
 
 DEFINE vscript = __SUB__CWD__/order_entry/poe_&vrs
-@&vscript &vrs 
+@&vscript &vrs  &&conn_string
 
 --
 -- OC subschema
@@ -178,7 +182,7 @@ DEFINE vscript = __SUB__CWD__/order_entry/poe_&vrs
 @__SUB__CWD__/order_entry/oe_analz
 
 -- oe_analz invalidates the coe public synonyms - recreate them
-CONNECT sys/&pass_sys AS SYSDBA;  
+CONNECT sys/&pass_sys&&conn_string AS SYSDBA;  
 CREATE OR REPLACE PUBLIC SYNONYM COE_CONFIGURATION FOR COE_CONFIGURATION;
 CREATE OR REPLACE PUBLIC SYNONYM COE_NAMESPACES FOR COE_NAMESPACES;
 CREATE OR REPLACE PUBLIC SYNONYM COE_DOM_HELPER FOR COE_DOM_HELPER;

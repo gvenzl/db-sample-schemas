@@ -34,6 +34,7 @@ rem   Prerequisites:
 rem     Tablespaces present
 rem
 rem MODIFIED   (MM/DD/YY)
+rem   gvenzl    03/06/15 - Including connection string
 rem   celsbern  07/02/12 - added explicit analyze of ix schema at finish.
 rem   jmadduku  02/18/11 - Grant Unlimited Tablespace priv with RESOURCE
 rem   ahunold   10/25/02 - gather_schema_stats
@@ -62,6 +63,9 @@ DEFINE log_path = &5
 PROMPT
 PROMPT specify version as parameter 6:
 DEFINE vrs = &6
+PROMPT
+PROMPT specify connection string as parameter 7:
+DEFINE conn_string = &7
 PROMPT
 
 -- The first dot in the spool command below is 
@@ -137,7 +141,7 @@ REM =======================================================
 REM Grant privilege for Streams, where appropriate
 REM =======================================================
 
-CONNECT sys/&pass_sys AS SYSDBA;
+CONNECT sys/&pass_sys&&conn_string AS SYSDBA;
 
 SET SERVEROUTPUT ON
 
@@ -197,7 +201,7 @@ REM =======================================================
 REM Create objects - message, queuetable, queue
 REM =======================================================
 
-CONNECT ix/&pass
+CONNECT ix/&pass&&conn_string
 
 DEFINE vscript = __SUB__CWD__/info_exchange/cix_&vrs
 @&vscript
@@ -206,7 +210,7 @@ REM =======================================================
 REM Using The Queues and Verification
 REM =======================================================
 
-CONNECT ix/&pass
+CONNECT ix/&pass&&conn_string
 
 DEFINE vscript = __SUB__CWD__/info_exchange/vix_&vrs
 @&vscript
@@ -217,7 +221,7 @@ REM stats.
 REM Do it as SYS so we do not have any grant problems.
 REM =======================================================
 
-connect sys/&pass_sys AS SYSDBA;
+CONNECT sys/&pass_sys&&conn_string AS SYSDBA;
 
 EXECUTE dbms_stats.gather_schema_stats('IX');
 

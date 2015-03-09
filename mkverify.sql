@@ -34,6 +34,7 @@ Rem    NOTES
 Rem      Relies on accurate statistics being collected
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem    gvenzl      03/06/15 - Including connection string
 Rem    cbauwens    08/09/04 - sorting of constraints 
 Rem    ahunold     02/11/03 - sorting of object privileges
 Rem    ahunold     10/25/02 - Dimensions, XML
@@ -48,8 +49,11 @@ PROMPT
 PROMPT specify spool filename as parameter 2:
 DEFINE spool_file          = &2
 PROMPT 
+PROMPT specify connection string as parameter 3:
+DEFINE conn_string         = &3
+PROMPT
 
-CONNECT system/&password_system;
+CONNECT system/&password_system&&conn_string
 
 --
 -- Workaround until situation with DBA_ALL_TABLES is clear

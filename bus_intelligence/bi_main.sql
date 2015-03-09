@@ -29,12 +29,13 @@ Rem    DESCRIPTION
 Rem      tbd
 Rem
 Rem    MODIFIED     (MM/DD/YY)
+Rem      gvenzl      03/06/15 - Including connection string
 Rem      jmadduku    02/18/11 - Grant Unlimited Tablespace priv with RESOURCE
 Rem      cbauwens    02/23/05 - deprocating connect role 
 Rem      ahunold     05/07/03 - no COMPANY_ID
 Rem      hyeh        11/19/02 - fix 'set echo'
 Rem      ahunold     09/17/02 - eliminate delta scripts
-Rem	 ahunold     08/07/02 - run in $OH
+Rem	   ahunold     08/07/02 - run in $OH
 Rem      ahunold     06/17/02 - no VPD
 Rem      ahunold     05/30/02 - parameter passing
 Rem      ahunold     05/16/02 - ahunold_bi_main
@@ -75,6 +76,9 @@ PROMPT
 PROMPT specify version as parameter 8:
 DEFINE vrs = &8
 PROMPT
+PROMPT specify connection string as parameter 9:
+DEFINE conn_string = &9
+PROMPT
 
 -- The first dot in the spool command below is 
 -- the SQL*Plus concatenation character
@@ -82,7 +86,7 @@ PROMPT
 DEFINE spool_file = &log_path.bi_&vrs..log
 SPOOL &spool_file
 
-CONNECT sys/&pwd_sys AS SYSDBA;
+CONNECT sys/&pwd_sys&&conn_string AS SYSDBA
 
 REM =======================================================
 REM cleanup section
@@ -120,20 +124,20 @@ REM  Changes made as OE
 REM     Grant object privileges to BI
 REM =======================================================
 
-@__SUB__CWD__/bus_intelligence/bi_oe_pr.sql &pwd_oe
+@__SUB__CWD__/bus_intelligence/bi_oe_pr.sql &pwd_oe &conn_string
 
 REM =======================================================
 REM  Changes made as SH 
 REM     Grant object privileges to BI
 REM =======================================================
 
-@__SUB__CWD__/bus_intelligence/bi_sh_pr.sql &pwd_sh
+@__SUB__CWD__/bus_intelligence/bi_sh_pr.sql &pwd_sh &conn_string
 
 REM =======================================================
 REM  Views and synonyms in the 10i BI schema
 REM =======================================================
 
-@__SUB__CWD__/bus_intelligence/bi_views.sql &pwd_bi
+@__SUB__CWD__/bus_intelligence/bi_views.sql &pwd_bi &conn_string
 
 REM =======================================================
 REM  Verification
@@ -143,7 +147,7 @@ SET ECHO ON
 COLUMN TABLE_NAME FORMAT A25
 COLUMN COLUMN_NAME FORMAT A30
 
-CONNECT bi/&pwd_bi;
+CONNECT bi/&pwd_bi&&conn_string
 
 SELECT COUNT(*) FROM customers;
 SELECT COUNT(*) FROM products;

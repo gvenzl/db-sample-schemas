@@ -34,14 +34,18 @@ Rem    NOTES
 Rem      Instantiates createUser.sql. Sets s_oePath
 Rem
 Rem    MODIFIED   (MM/DD/YY)
-Rem    bhammers    02/24/11 - 11790077:do not delete home directory if existent
-Rem    bhammers  01/24/11 - bug 11790009: consistent variable name for sys pwd 
-Rem    celsbern    07/17/09 - added explicit revoke of execute on directory
-Rem                           objects
-Rem    celsbern    02/24/09 - renamed XMLDIR to SS_OE_XMLDIR
-Rem    cbauwens    09/23/04 - cbauwens_bug3031915
-Rem    cbauwens    03/16/04 - Created
+Rem    gvenzl     03/06/15 - Including connection string
+Rem    bhammers   02/24/11 - 11790077:do not delete home directory if existent
+Rem    bhammers   01/24/11 - bug 11790009: consistent variable name for sys pwd 
+Rem    celsbern   07/17/09 - added explicit revoke of execute on directory
+Rem                          objects
+Rem    celsbern   02/24/09 - renamed XMLDIR to SS_OE_XMLDIR
+Rem    cbauwens   09/23/04 - cbauwens_bug3031915
+Rem    cbauwens   03/16/04 - Created
             
+PROMPT specify connection string as parameter 1:
+DEFINE conn_string = &1
+PROMPT
 
 DECLARE
   targetFolder VARCHAR2(256) := '/home';
@@ -61,7 +65,7 @@ BEGIN
 END;
 / 
 
-CONNECT OE/&pass_oe
+CONNECT OE/&pass_oe&&conn_string
 
 --Create Oracle directory object
 DROP DIRECTORY SS_OE_XMLDIR
@@ -71,10 +75,10 @@ CREATE DIRECTORY SS_OE_XMLDIR as '__SUB__CWD__/order_entry/'
 COMMIT
 /
 
-CONNECT sys/&&pass_sys AS SYSDBA;
+CONNECT sys/&&pass_sys&&conn_string AS SYSDBA
  
 revoke execute on directory SS_OE_XMLDIR from OE
 /
-CONNECT OE/&pass_oe
+CONNECT OE/&pass_oe&&conn_string
 
 

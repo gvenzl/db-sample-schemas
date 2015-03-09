@@ -34,6 +34,7 @@ Rem    NOTES
 Rem      <other useful comments, qualifications, etc.>
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem    gvenzl      03/06/15 - Including connection string
 Rem    jstenois    07/01/13 - Fix TERRITORY to be AMERICA; not AMERICAN
 Rem    cbauwens    03/06/08 - NLS setting for load
 Rem    bmccarth    04/20/07 - add Territory American to et statement
@@ -77,6 +78,9 @@ PROMPT
 PROMPT specify version as parameter 4:
 DEFINE vrs = &4
 PROMPT
+PROMPT specify connection string as parameter 5:
+DEFINE conn_string = &5
+PROMPT
 
 SET PAGESIZE 0
 
@@ -100,7 +104,7 @@ PROMPT   &ctl_file
 PROMPT   &dat_file
 PROMPT   &log_file
 
-HOST sqlldr sh/&sh_pass  -
+HOST sqlldr sh/&sh_pass&&conn_string  -
  control=&ctl_file data=&dat_file log=&log_file -
  direct=yes -
  rows=1000
@@ -119,7 +123,7 @@ PROMPT   &ctl_file
 PROMPT   &dat_file
 PROMPT   &log_file
 
-HOST sqlldr sh/&sh_pass  -
+HOST sqlldr sh/&sh_pass&&conn_string  -
  control=&ctl_file data=&dat_file log=&log_file -
  direct=yes -
  rows=1000
@@ -138,7 +142,7 @@ PROMPT   &ctl_file
 PROMPT   &dat_file
 PROMPT   &log_file
 
-HOST sqlldr sh/&sh_pass  -
+HOST sqlldr sh/&sh_pass&&conn_string  -
  control=&ctl_file data=&dat_file log=&log_file -
  direct=yes -
  rows=10000
@@ -159,7 +163,7 @@ PROMPT   &ctl_file
 PROMPT   &dat_file
 PROMPT   &log_file
 
-HOST sqlldr sh/&sh_pass  -
+HOST sqlldr sh/&sh_pass&&conn_string  -
  control=&ctl_file data=&dat_file log=&log_file -
  direct=yes -
  rows=10000
@@ -179,7 +183,7 @@ PROMPT   &ctl_file
 PROMPT   &dat_file
 PROMPT   &log_file
 
-HOST sqlldr sh/&sh_pass  -
+HOST sqlldr sh/&sh_pass&&conn_string  -
  control=&ctl_file data=&dat_file log=&log_file -
  direct=yes -
  rows=10
@@ -199,7 +203,7 @@ PROMPT   &ctl_file
 PROMPT   &dat_file
 PROMPT   &log_file
 
-HOST sqlldr sh/&sh_pass  -
+HOST sqlldr sh/&sh_pass&&conn_string  -
  control=&ctl_file data=&dat_file log=&log_file -
  direct=yes -
  rows=10
@@ -220,7 +224,7 @@ PROMPT   &ctl_file
 PROMPT   &dat_file
 PROMPT   &log_file
 
-HOST sqlldr sh/&sh_pass  -
+HOST sqlldr sh/&sh_pass&&conn_string  -
  control=&ctl_file data=&dat_file log=&log_file -
  direct=yes -
  rows=100000
@@ -310,7 +314,7 @@ PROMPT   &dat_file
 PROMPT   &log_file
 
 
-HOST sqlldr sh/&sh_pass  -
+HOST sqlldr sh/&sh_pass&&conn_string  -
  control=&ctl_file data=&dat_file log=&log_file -
  direct=yes -
  rows=100
@@ -330,7 +334,7 @@ PROMPT   &ctl_file
 PROMPT   &dat_file
 PROMPT   &log_file
 
-HOST sqlldr sh/&sh_pass  -
+HOST sqlldr sh/&sh_pass&&conn_string  -
  control=&ctl_file data=&dat_file log=&log_file -
  direct=yes -
  rows=10

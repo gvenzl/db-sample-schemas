@@ -42,6 +42,7 @@ Rem        will have to edit this data file.
 Rem     3) Run this as SYS or SYSTEM
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem     gvenzl     03/06/15 - Including connection string
 Rem     jmadduku   02/18/11 - Grant Unlimited Tablespace priv with RESOURCE
 Rem     hyeh       11/19/02 - standardize path of pm scripts
 Rem     hyeh       08/29/02 - hyeh_mv_comschema_to_rdbms
@@ -87,6 +88,9 @@ PROMPT
 PROMPT specify work directory path as parameter 8:
 DEFINE work_path = &8
 PROMPT
+PROMPT specify connection string as parameter 9:
+DEFINE conn_string = &9
+PROMPT
 
 -- The first dot in the spool command below is 
 -- the SQL*Plus concatenation character
@@ -109,7 +113,7 @@ REM =======================================================
 REM grants from oe schema
 REM =======================================================
 
-CONNECT oe/&passoe
+CONNECT oe/&passoe&&conn_string
 
 GRANT REFERENCES, SELECT ON product_information TO pm;
 GRANT SELECT ON order_items TO pm;
@@ -124,7 +128,7 @@ REM =======================================================
 REM grants from sys schema
 REM =======================================================
 
-CONNECT sys/&pass_sys AS SYSDBA;
+CONNECT sys/&pass_sys&&conn_string AS SYSDBA;
 
 GRANT execute ON sys.dbms_stats TO pm;
 
@@ -136,7 +140,7 @@ REM =======================================================
 REM create pm schema (product media)
 REM =======================================================
 
-CONNECT pm/&pass
+CONNECT pm/&pass&&conn_string
 
 ALTER SESSION SET NLS_LANGUAGE=American;
 ALTER SESSION SET NLS_TERRITORY=America;

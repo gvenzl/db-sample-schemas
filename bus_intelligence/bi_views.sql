@@ -28,6 +28,7 @@ Rem    DESCRIPTION
 Rem      tbd
 Rem
 Rem    MODIFIED     (MM/DD/YY)
+Rem      gvenzl      03/06/15 - Including connection string
 Rem      ahunold     05/07/03 - no COMPANY_ID
 Rem      ahunold     09/18/02 - ahunold_sep17_02
 Rem      ahunold     09/17/02 - created
@@ -44,8 +45,11 @@ PROMPT
 PROMPT specify password for BI as parameter 1:
 DEFINE bi_pass             = &1
 PROMPT
+PROMPT specify connection string as parameter 2:
+DEFINE conn_string         = &2
+PROMPT
 
-CONNECT bi/&bi_pass;
+CONNECT bi/&bi_pass&&conn_string
 
 CREATE SYNONYM channels		FOR sh.channels;
 CREATE SYNONYM countries	FOR sh.countries;

@@ -34,6 +34,7 @@ Rem    NOTES
 Rem
 Rem    CREATED by Nancy Greenberg - 06/01/00
 Rem    MODIFIED   (MM/DD/YY)
+Rem    gvenzl      03/06/15 - Including connection string
 Rem    hyeh        08/29/02 - hyeh_mv_comschema_to_rdbms
 Rem    ahunold     02/20/01 - New header, non-table objects
 Rem    vpatabal    03/02/01 - DROP TABLE region 
@@ -46,7 +47,12 @@ SET TAB OFF
 SET PAGESIZE 100
 SET ECHO OFF
 
-CONNECT hr/&password_HR
+PROMPT specify connection string as parameter 1:
+DEFINE conn_string = &1
+PROMPT
+
+
+CONNECT hr/&password_HR&&conn_string
 
 DROP PROCEDURE add_job_history;
 DROP PROCEDURE secure_dml;

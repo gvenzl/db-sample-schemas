@@ -34,6 +34,7 @@ Rem    NOTES
 Rem      .
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem    gvenzl      03/06/15 - Including connection string
 Rem    bhammers    01/24/11 - bug 11790062: rename XDB_ to COE_
 Rem    cbauwens    02/24/05 - drop 2 more xdb objects after xml schema creation
 Rem    cbauwens    08/04/04 - drop xdb packages after xml schema creation 
@@ -52,12 +53,15 @@ PROMPT
 PROMPT PROMPT password for SYS as parameter 2:
 DEFINE pass_sys = &2
 PROMPT
+PROMPT specify connection string as parameter 3:
+DEFINE conn_string = &3
+PROMPT
 
 
 --
 -- CONNECT as SYS. Add roles AND privileges to OE.
 --
-CONNECT sys/&pass_sys AS SYSDBA;
+CONNECT sys/&pass_sys&&conn_string AS SYSDBA;
 
 
 GRANT xdbadmin TO oe;
@@ -70,11 +74,11 @@ GRANT alter session TO oe;
 
 
 -- Create directory object, instantiated by createUser.sql.sbs
- @__SUB__CWD__/order_entry/createUser
+ @__SUB__CWD__/order_entry/createUser &conn_string
 
 
 
-CONNECT oe/&pass_oe;
+CONNECT oe/&pass_oe&&conn_string
 
 --
 -- set . and , as decimal point and thousand separator for the session
@@ -83,14 +87,14 @@ CONNECT oe/&pass_oe;
 ALTER SESSION SET NLS_NUMERIC_CHARACTERS='.,';
 
 -- Create folders and load
- @__SUB__CWD__/order_entry/xdb03usg
+ @__SUB__CWD__/order_entry/xdb03usg &conn_string
 
 
 --
 -- CONNECT as SYS. Revoke "ANY" privs
 --
 
-CONNECT sys/&pass_sys AS SYSDBA;  
+CONNECT sys/&pass_sys&&conn_string AS SYSDBA  
 
 REVOKE create any directory FROM oe;
 REVOKE drop any directory FROM oe;
@@ -105,5 +109,5 @@ DROP TRIGGER xdb.no_dml_operations_allowed;
 DROP VIEW    xdb.database_summary;
 
 
-CONNECT oe/&&pass_oe;
+CONNECT oe/&&pass_oe&&conn_string
 

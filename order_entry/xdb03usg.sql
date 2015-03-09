@@ -34,6 +34,7 @@ Rem    NOTES
 Rem      .
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem    gvenzl      03/06/15 - Including connection string
 Rem    celsbern    06/15/12 - using force=TRUE on registerSchema
 Rem    bhammers    01/24/11 - bug 11790062: rename XDB_ to COE_, bug 11790009: 
 Rem                           consistent variable name for sys pwd 
@@ -43,6 +44,10 @@ Rem    celsbern    02/24/09 - renamed XMLDIR to SS_OE_XMLDIR
 Rem    cbauwens    05/25/05 - rename nested tables 
 Rem    cbauwens    09/23/04 - cbauwens_bug3031915
 Rem    cbauwens    03/16/04 - Created
+
+PROMPT specify connection string as parameter 1:
+DEFINE conn_string = &1
+PROMPT
 
 --
 --
@@ -90,8 +95,8 @@ END;
 /
 
 -- revoke the grant of execute on the SUBDIR directory 
-CONNECT sys/&&pass_sys AS SYSDBA;
+CONNECT sys/&&pass_sys&&conn_string AS SYSDBA;
  
 revoke execute on directory SUBDIR from OE
 /
-CONNECT OE/&pass_oe
+CONNECT OE/&pass_oe&&conn_string

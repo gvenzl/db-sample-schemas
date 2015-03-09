@@ -28,6 +28,7 @@ Rem    DESCRIPTION
 Rem      tbd
 Rem
 Rem    MODIFIED     (MM/DD/YY)
+Rem      gvenzl      03/06/15 - Including connection string
 Rem      ahunold     09/18/02 - ahunold_sep17_02
 Rem      ahunold     09/17/02 - created
 Rem
@@ -43,8 +44,11 @@ PROMPT
 PROMPT specify password for SH as parameter 1:
 DEFINE sh_pass             = &1
 PROMPT
+PROMPT specify connection string as parameter 2:
+DEFINE conn_string         = &2
+PROMPT
 
-CONNECT sh/&sh_pass;
+CONNECT sh/&sh_pass&&conn_string;
 
 GRANT SELECT ON channels		TO bi;
 GRANT SELECT ON countries		TO bi;

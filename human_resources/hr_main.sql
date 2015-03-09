@@ -35,6 +35,7 @@ rem NOTES
 rem   Run as SYS or SYSTEM
 rem
 rem MODIFIED   (MM/DD/YY)
+rem   gvenzl    03/06/15 - Including connection string
 rem   jmadduku  02/18/11 - Grant Unlimited Tablespace priv with RESOURCE
 rem   celsbern  06/17/10 - fixing bug 9733839
 rem   pthornto  07/16/04 - obsolete 'connect' role 
@@ -67,6 +68,8 @@ PROMPT
 PROMPT specify log path as parameter 5:
 DEFINE log_path = &5
 PROMPT
+PROMPT specify connection string as parameter 6:
+DEFINE conn_string = &6
 
 -- The first dot in the spool command below is 
 -- the SQL*Plus concatenation character
@@ -101,14 +104,14 @@ REM =======================================================
 REM grants from sys schema
 REM =======================================================
 
-CONNECT sys/&pass_sys AS SYSDBA;
+CONNECT sys/&pass_sys&&conn_string AS SYSDBA;
 GRANT execute ON sys.dbms_stats TO hr;
 
 REM =======================================================
 REM create hr schema objects
 REM =======================================================
 
-CONNECT hr/&pass
+CONNECT hr/&pass&&conn_string
 ALTER SESSION SET NLS_LANGUAGE=American;
 ALTER SESSION SET NLS_TERRITORY=America;
 

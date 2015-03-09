@@ -63,6 +63,8 @@ Rem        Example: @/your/path/to/mksample mgr secure h1 o2 p3 q4 s5
 Rem        (please choose your own passwords for security purposes)
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem      gvenzl    03/09/15 - Automatic logfile_dir creation
+Rem      gvenzl    03/06/15 - Including connection string
 Rem      celsbern  07/17/09 - removed drop of directory objects
 Rem      celsbern  07/16/09 - removed drop of xdb directory objects
 Rem      celsbern  02/24/09 - added drop of directory objects
@@ -128,11 +130,16 @@ PROMPT
 PROMPT specify log file directory (including trailing delimiter) as parameter 11:
 DEFINE logfile_dir         = &11
 PROMPT 
+PROMPT specify connection string as parameter 12:
+DEFINE conn_string         = &12
+PROMPT 
 PROMPT Sample Schemas are being created ...
 PROMPT
 DEFINE vrs = v3
 
-CONNECT system/&&password_system
+HOST mkdir -p &logfile_dir
+
+CONNECT system/&&password_system&&conn_string
 
 DROP USER hr CASCADE;
 DROP USER oe CASCADE;
@@ -141,43 +148,43 @@ DROP USER ix CASCADE;
 DROP USER sh CASCADE;
 DROP USER bi CASCADE;
 
-CONNECT system/&&password_system
+CONNECT system/&&password_system&&conn_string
 
 SET SHOWMODE OFF
 
-@__SUB__CWD__/human_resources/hr_main.sql &&password_hr &&default_ts &&temp_ts &&password_sys &&logfile_dir
+@__SUB__CWD__/human_resources/hr_main.sql &&password_hr &&default_ts &&temp_ts &&password_sys &&logfile_dir &&conn_string
 
-CONNECT system/&&password_system
+CONNECT system/&&password_system&&conn_string
 SET SHOWMODE OFF
 
-@__SUB__CWD__/order_entry/oe_main.sql &&password_oe &&default_ts &&temp_ts &&password_hr &&password_sys __SUB__CWD__/order_entry/ &&logfile_dir &vrs
+@__SUB__CWD__/order_entry/oe_main.sql &&password_oe &&default_ts &&temp_ts &&password_hr &&password_sys __SUB__CWD__/order_entry/ &&logfile_dir &vrs &&conn_string
 
-CONNECT system/&&password_system
+CONNECT system/&&password_system&&conn_string
 
 SET SHOWMODE OFF
 
-@__SUB__CWD__/product_media/pm_main.sql &&password_pm &&default_ts &&temp_ts &&password_oe &&password_sys __SUB__CWD__/product_media/ &&logfile_dir __SUB__CWD__/product_media/
+@__SUB__CWD__/product_media/pm_main.sql &&password_pm &&default_ts &&temp_ts &&password_oe &&password_sys __SUB__CWD__/product_media/ &&logfile_dir __SUB__CWD__/product_media/ &&conn_string
 
-CONNECT system/&&password_system
+CONNECT system/&&password_system&&conn_string
 SET SHOWMODE OFF
 
-@__SUB__CWD__/info_exchange/ix_main.sql &&password_ix &&default_ts &&temp_ts &&password_sys &&logfile_dir &vrs
+@__SUB__CWD__/info_exchange/ix_main.sql &&password_ix &&default_ts &&temp_ts &&password_sys &&logfile_dir &vrs &&conn_string
 
-CONNECT system/&&password_system
+CONNECT system/&&password_system&&conn_string
 SET SHOWMODE OFF
 
-@__SUB__CWD__/sales_history/sh_main &&password_sh &&default_ts &&temp_ts &&password_sys __SUB__CWD__/sales_history/ &&logfile_dir &vrs
+@__SUB__CWD__/sales_history/sh_main &&password_sh &&default_ts &&temp_ts &&password_sys __SUB__CWD__/sales_history/ &&logfile_dir &vrs &&conn_string
 
-CONNECT system/&&password_system
+CONNECT system/&&password_system&&conn_string
 SET SHOWMODE OFF
 
-@__SUB__CWD__/bus_intelligence/bi_main &&password_bi &&default_ts &&temp_ts &&password_sys &&password_oe &&password_sh &&logfile_dir &vrs
+@__SUB__CWD__/bus_intelligence/bi_main &&password_bi &&default_ts &&temp_ts &&password_sys &&password_oe &&password_sh &&logfile_dir &vrs &&conn_string
 
-CONNECT system/&&password_system
+CONNECT system/&&password_system&&conn_string
 
 SPOOL OFF
 
 DEFINE veri_spool = &&logfile_dir.mkverify_&vrs..log
 
-@__SUB__CWD__/mkverify &&password_system &veri_spool 
+@__SUB__CWD__/mkverify &&password_system &veri_spool &&conn_string
 

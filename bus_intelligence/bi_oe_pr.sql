@@ -28,6 +28,7 @@ Rem    DESCRIPTION
 Rem      tbd
 Rem
 Rem    MODIFIED     (MM/DD/YY)
+Rem      gvenzl      03/06/15 - Including connection string
 Rem      ahunold     09/18/02 - ahunold_sep17_02
 Rem      ahunold     09/17/02 - created
 Rem
@@ -42,10 +43,13 @@ SET PAGESIZE 100
 PROMPT
 PROMPT specify password for oe as parameter 1:
 DEFINE oe_pass             = &1
+PROMPT
+PROMPT specify connection string as parameter 2:
+DEFINE conn_string         = &2
 
 PROMPT
 
-CONNECT oe/&oe_pass;
+CONNECT oe/&oe_pass&&conn_string;
 
 GRANT SELECT ON BOMBAY_INVENTORY TO bi;
 GRANT SELECT ON CUSTOMERS TO bi;

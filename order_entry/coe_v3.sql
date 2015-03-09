@@ -37,6 +37,7 @@ rem   simplify the setup of Replication demos and are not needed
 rem   in most unreplicated environments.
 rem
 rem MODIFIED   (MM/DD/YY)
+Rem   gvenzl    03/06/15 - Including connection string
 rem   bhammers  01/24/11 - bug 11790009: consistent variable name for sys pwd 
 rem   ahunold   10/10/02 - bug 2376117
 rem   ahunold   10/07/02 - coe_xml.sql
@@ -60,6 +61,9 @@ DEFINE pwd_oe  = &2
 PROMPT
 PROMPT PROMPT password for SYS as parameter 3:
 DEFINE pass_sys = &3
+PROMPT
+PROMPT specify connection string as parameter 4:
+DEFINE conn_string = &4
 PROMPT
  
 -- ======================================================================
@@ -357,7 +361,7 @@ REM ===========================================================================
 REM Call XML script
 REM ===========================================================================
 
-@__SUB__CWD__/order_entry/coe_xml.sql &pwd_oe &pass_sys
+@__SUB__CWD__/order_entry/coe_xml.sql &pwd_oe &pass_sys &&conn_string
 
 REM ===========================================================================
 REM Need commit for PO
