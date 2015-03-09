@@ -34,6 +34,7 @@ Rem    NOTES
 Rem      Relies on accurate statistics being collected
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem    gvenzl      03/09/15 - Include exit at the end of script
 Rem    gvenzl      03/06/15 - Including connection string
 Rem    cbauwens    08/09/04 - sorting of constraints 
 Rem    ahunold     02/11/03 - sorting of object privileges
@@ -214,4 +215,4 @@ SELECT    owner, index_name, distinct_keys, num_rows
  ORDER BY 1,2,3;        
 
 SPOOL OFF
-
+EXIT
