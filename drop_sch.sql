@@ -40,6 +40,8 @@ Rem               named HR,OE,IX,PM,SH
 Rem
 Rem
 Rem    MODIFIED   (MM/DD/YY)
+Rem    gvenzl      03/09/15 - Parameterize inputs
+Rem    gvenzl      03/06/15 - Including connection string
 Rem    cbauwens    03/05/09 - Drop Sample Schemas
 Rem    cbauwens    03/05/09 - Created
 Rem
@@ -62,14 +64,18 @@ COLUMN status           FORMAT A8
 
 
 PROMPT 
-PROMPT specify password for SYSTEM:
-DEFINE pwd_system
+PROMPT specify password for SYSTEM as parameter 1:
+DEFINE pwd_system = &1
 
-PROMPT specify spoolfile name:
-DEFINE spl_file
+PROMPT specify connection string as parameter 2:
+DEFINE conn_string = &2
 PROMPT 
 
-CONNECT system/&pwd_system
+PROMPT specify spoolfile name as parameter 3:
+DEFINE spl_file = &3
+PROMPT 
+
+CONNECT system/&pwd_system&&conn_string
 SPOOL &spl_file
 
 Rem ******** List schemas and objects ********

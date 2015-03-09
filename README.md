@@ -145,8 +145,8 @@ source /usr/local/bin/oraenv
 ### 3.2. Run the schema removal script
 
 ```shell
-sqlplus system/systempw 
-@drop_sch.sql
+sqlplus /nolog
+@drop_sch.sql systempw conn_string
 ```
 
-When prompted, enter the SYSTEM password and a log file name.
+When prompted, enter the SYSTEM password the connection string and a log file name.
