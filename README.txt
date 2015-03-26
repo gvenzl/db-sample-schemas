@@ -152,7 +152,7 @@ provides instructions for creating the Sample Schemas.
 
 4.  Known bugs
  
-4.1 The Sample Schema scripts do not work with pluggable databases.
+NONE!
 
 ========================================================================
 

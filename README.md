@@ -41,7 +41,7 @@ The schemas are:
 *Due to widespread dependence on these scripts in their current form,
 no pull requests for changes can be accepted.*
 
-## 2. Installing the Samples
+## 2. Prepare Sample schemas installation
 
 *CAUTION*: Do not use install the samples if you already have user
 accounts named HR, OE, PM, IX, SH or BI.
@@ -101,7 +101,9 @@ source /usr/local/bin/oraenv
 *Note*: Oracle's `sqlldr` utility needs to be in `$PATH` for correct
 loading of the Product Media (PM) and Sales History (SH) schemas.
 
-### 2.5.  Run the installation script
+## 3. Installing the Samples
+
+### 3.1. Run installation scripts
 
 Review the [README.txt](#README.txt) for information on passwords and
 pre-requirements. In particular, verify your default and temporary
@@ -112,14 +114,14 @@ discussed in [README.txt](#README.txt):
 
 ```shell
 sqlplus /nolog
-@mksample systempw syspw hrpw oepw pmpw ixpw shpw bipw users temp /your/path/to/log/ conn_string
+@mksample systempw syspw hrpw oepw pmpw ixpw shpw bipw <tablespace> <temp tablespace> </your/path/to/log/> <connection_string>
 ```
-An example run of the script above would look like this:
+An example call of the script above would look like this:
 ```shell
 sqlplus /nolog
-@mksample oracle oracle hr oe pm ix sh bi users temp /home/oracle/Desktop/run/log/ @//localhost:1521/TEST
+@mksample oracle oracle hr oe pm ix sh bi EXAMPLES TEMP /home/oracle/Desktop/run/log/ @//localhost:1521/TEST
 ```
-***Note***: Use an absolute path and also append a trailing slash to the log directory name.
+***Note***: Use an absolute path and also append a trailing slash to the log directory name.  
 ***Note***: The connection string is optional. If no connection string is specified the script will automatically connect to $ORACLE_SID
 
 Use your current SYSTEM and SYS passwords, and also your actual
@@ -127,21 +129,60 @@ default and temporary tablespace names.  The passwords for the new
 HR, OE, PM, IX, SH and BI users will be set to the values you
 specify.
 
-### 2.6. Review the installation logs
+### 3.2. Review the installation logs
 
 Review output in your log directory for errors.
 
-## 3. Removing the Samples
+## 4. Examples Schema pluggable database
+If you did install the Examples schemas into a pluggable database
+you can automatically unplug that pluggable database and plug it in
+into another container database or simply replug it into the original one.
 
-*CAUTION*: This will drop user accounts named HR, OE, PM, IX, SH and BI.
+### 4.1 Unplug pluggable database
+***CAUTION:*** This will unplug and drop the pluggable database from your CDB!
 
-### 3.1. Set the Oracle environment
+Start SQL*Plus and run the top level unplugging script:
+```shell
+sqlplus /nolog
+@unplugpdb.sql syspw pdb_name conn_string_CDB
+```
+
+An example call of the scripts above would look like this:
+```shell
+sqlplus /nolog
+@unplugpdb.sql oracle EXAMPLES @//localhost:1521/CDB
+```
+
+Once the script has completed you will have a new `examples_pdb` subfolder
+which contains an archive including your PDB and its datafiles.
+
+### 4.2 Plug Examples Schemas PDB into CDB
+To replug or plug your Examples Schemas PDB into a CDB you can simply run
+the top level plugging script:
+
+Start SQL*Plus and run the top level unplugging script:
+```shell
+sqlplus /nolog
+@plugpdb.sql syspw new_pdb_name pdb_datafiles_location conn_string_CDB
+```
+
+An example call of the scripts above would look like this:
+```shell
+sqlplus /nolog
+@unplugpdb.sql oracle EXAMPLES /opt/oracle/oradata/CDBDEV/ @//localhost:1521/CDBDEV
+```
+
+## 5. Removing the Samples
+
+***CAUTION***: This will drop user accounts named HR, OE, PM, IX, SH and BI.
+
+### 5.1. Set the Oracle environment
 
 ```shell
 source /usr/local/bin/oraenv
 ```
 
-### 3.2. Run the schema removal script
+### 5.2. Run the schema removal script
 
 ```shell
 sqlplus /nolog
